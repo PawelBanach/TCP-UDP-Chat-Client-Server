@@ -12,7 +12,6 @@ class Server
     @udp_socket.bind(IP, PORT )
 
     @connections = Hash.new
-    @connections[:server] = @tcp_server
     @connections[:clients] = Hash.new
     @connections[:udp_ports] = Hash.new
 
@@ -39,7 +38,7 @@ class Server
         puts "#{nick_name} #{client}"
         @connections[:clients][nick_name] = client
         client.puts "Connection established, Thank you for joining! Happy chatting"
-        listen_user_messages( nick_name, client )
+        listenTCP(nick_name, client )
       end
     }.join
   end
@@ -57,7 +56,7 @@ class Server
     end
   end
 
-  def listen_user_messages( username, client )
+  def listenTCP(username, client )
     loop {
       msg = client.gets.chomp
       @connections[:clients].each do |other_name, other_client|
